@@ -1,0 +1,11 @@
+﻿<UserControl x:Class="Users.MapObjects.PrinterObjectControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Users.MapObjects"
+             mc:Ignorable="d" >
+    <Border Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#3e7a37" BorderThickness="2" CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}}">
+            <Image Source="{Binding ImageSource}" Margin="5"/>
+        </Border>
+</UserControl>

@@ -1,0 +1,49 @@
+﻿<UserControl x:Class="Users.ControlViewerZoomPhoto"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Users"
+             mc:Ignorable="d">
+    <Grid Background="White" Height="auto" Width="700"  DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ControlViewerZoomPhoto}}}"  Margin="40">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <DockPanel Grid.ColumnSpan="2" Background="#235D79" >
+            <TextBlock DockPanel.Dock="Left" Margin="20,0,0,0" Text="Фото" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="17"/>
+            <TextBlock DockPanel.Dock="Right" Margin="0,0,20,0" HorizontalAlignment="Right" Text="{Binding ChangePasswordUser.Name}" VerticalAlignment="Center" Foreground="White"  FontSize="17"/>
+        </DockPanel>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="20" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ControlViewerZoomPhoto}}}">
+            <Image Source="{Binding ChangePasswordUser.AddressPhoto}"/>
+        </Grid>
+
+        <Button Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" Width="100"  Content="Найти" Height="30" Margin="20,0,20,0" Command="{Binding Close}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ControlViewerZoomPhoto}}}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" CornerRadius="7" Background="#313131">
+                        <TextBlock Text="Закрыть" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="#404040"/>
+                            <Setter TargetName="border" Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed"  Value="true">
+
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        
+    </Grid>
+</UserControl>

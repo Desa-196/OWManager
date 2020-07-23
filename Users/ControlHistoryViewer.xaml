@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="Users.ControlHistoryViewer"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Users"
+             mc:Ignorable="d" 
+             d:DesignHeight="500" d:DesignWidth="800">
+    
+    <Grid Background="White" Height="auto" Width="600" Margin="30">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.ColumnSpan="2" Background="#235D79" >
+            <TextBlock Margin="20,0,0,0" Text="История поиска" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="17"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.ColumnSpan="2" Margin="20" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ControlHistoryViewer}}}">
+            <ListBox ItemsSource="{Binding HistoryList}" HorizontalContentAlignment="Stretch" SelectedItem="{Binding SelectIteam}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border BorderBrush="#FF767676" BorderThickness="0,0,0,0.6" >
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="20"/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <Grid Background="#313131" >
+                                    <TextBlock VerticalAlignment="Center" Margin="20,0,0,0" Text="{Binding DateTimeStamp}" Foreground="White"/>
+                                </Grid>
+                            
+                                <StackPanel Grid.Row="1" Orientation="Vertical" Margin="20,10,20,20">
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding UserName}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding UserName}" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Width="150" Text="Имя пользователя:"/>
+                                        <TextBlock  Text="{Binding UserName}"/>
+                                    </StackPanel>
+                                
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding TelephoneNumber}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding TelephoneNumber}" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Width="150" Text="Номер телефона:"/>
+                                        <TextBlock  Text="{Binding TelephoneNumber}"/>
+                                    </StackPanel>
+                                
+                                    <StackPanel Orientation="Horizontal">
+                                        <StackPanel.Style>
+                                            <Style TargetType="StackPanel">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ComputerName}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding ComputerName}" Value="">
+                                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </StackPanel.Style>
+                                        <TextBlock Width="150" Text="Имя компьютера:"/>
+                                        <TextBlock  Text="{Binding ComputerName}"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Button Grid.Row="2" Grid.Column="0"  Content="Найти выбранное" Height="30" Margin="20,0,20,0" Command="{Binding Search}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ControlHistoryViewer}}}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" CornerRadius="7" Background="#313131">
+                        <TextBlock Text="Найти" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter TargetName="border" Property="Opacity" Value="0.5"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="#404040"/>
+                            <Setter TargetName="border" Property="Cursor" Value="Hand"/>
+                        </Trigger>
+
+                        <Trigger Property="IsPressed"  Value="true">
+
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+        <Button Grid.Row="2" Grid.Column="1"  Content="Найти" Height="30" Margin="20,0,20,0" Command="{Binding Close}" DataContext="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ControlHistoryViewer}}}">
+            <Button.Template>
+                <ControlTemplate TargetType="Button">
+                    <Border x:Name="border" CornerRadius="7" Background="#313131">
+                        <TextBlock Text="Отмена" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="White" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter TargetName="border" Property="Background" Value="#404040"/>
+                            <Setter TargetName="border" Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed"  Value="true">
+
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Button.Template>
+        </Button>
+    </Grid>
+</UserControl>

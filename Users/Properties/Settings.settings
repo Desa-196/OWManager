@@ -1,0 +1,15 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Users.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="RadminPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">C:\Program Files (x86)\Radmin Viewer 3\Radmin.exe</Value>
+    </Setting>
+    <Setting Name="PhotoPath" Type="System.String" Scope="User">
+      <Value Profile="(Default)">\\aos-01\Foto</Value>
+    </Setting>
+    <Setting Name="MaxSearchUser" Type="System.Int16" Scope="User">
+      <Value Profile="(Default)">40</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>

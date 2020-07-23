@@ -1,0 +1,282 @@
+﻿<UserControl x:Class="Users.ControlMaps"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Users"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="ButtonTemplate.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            
+            <SolidColorBrush x:Key="ResourceBrushBlue" Color="#FFAFCDDC" />
+            
+            <local:WidthCanvasMapConvertor x:Key="WidthCanvasMapConvertor"/>
+            <local:HeightCanvasMapConvertor x:Key="HeightCanvasMapConvertor"/>
+            <DataTemplate x:Key="ListItemTemplSelected">
+                <Border Background="{x:Null}" BorderBrush="#FF37A255" BorderThickness="4" CornerRadius="40">
+                    <Border  Margin="2" Background="White" BorderBrush="{Binding Color}" BorderThickness="2" Height="25" Width="25" CornerRadius="40" ToolTip="{Binding Name}">
+                        <Image Source="{Binding ImageSource}" Margin="3"/>
+                    </Border>
+                </Border>
+            </DataTemplate>
+            <DataTemplate x:Key="ListItemTempl">
+                <Border Background="{x:Null}" BorderBrush="{x:Null}" BorderThickness="4" CornerRadius="40">
+                    <Border  Margin="2" Background="White" BorderBrush="{Binding Color}" BorderThickness="2" Height="25" Width="25" CornerRadius="40" ToolTip="{Binding Name}">
+                        <Image Source="{Binding ImageSource}" Margin="3"/>
+                    </Border>
+                </Border>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid Background="White" x:Name="mainGrid">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="250"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+
+        <Border Height="30" Grid.ColumnSpan="2" BorderThickness="0,0,0,0.8" BorderBrush="#FF666666">
+            <Grid Background="#FFEFE7">
+                <TextBlock  Foreground="#252525" Text="КАРТЫ" VerticalAlignment="Center" Margin="20,0,0,0"/>
+            </Grid>
+        </Border>
+        <Grid Grid.Column="1" Grid.Row="1">
+            <local:MapViewer 
+                x:Name="Map"
+                SourceElements="{Binding DataContext.ArrayMapObjects}"
+                MapImageSource="{Binding DataContext.MapImage}"
+                MapId="{Binding DataContext.MapId}"
+            />
+            <Button 
+                Margin="0,5,20,0"
+                Height="30" 
+                Width="30" 
+                ToolTip="Применён фильтр, для отмены фильтра нажмите на иконку"
+                HorizontalAlignment="Right" 
+                VerticalAlignment="Top"
+                >
+                <Button.BitmapEffect>
+                    <DropShadowBitmapEffect Opacity="0.3"/>
+                </Button.BitmapEffect>
+                <Button.Template>
+                    <ControlTemplate>
+                        <Image Source="Ресурсы/Filter.png" />
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <Border BorderThickness="2" BorderBrush="#FFAFC4DC"  Background="{Binding ElementName=MenuLocations, Path=Background}" Margin="60,5,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" CornerRadius="10">
+                <Border.BitmapEffect>
+                    <DropShadowBitmapEffect Opacity="0.3"/>
+                </Border.BitmapEffect>
+                <Menu  Height="30" BorderThickness="0" Margin="20,0,20,0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <MenuItem x:Name="MenuLocations" Header="{Binding NameSetLocations}" Height="30" ItemsSource="{Binding Locations}" BorderThickness="0">
+                        <MenuItem.Style>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="Background" Value="White"/>
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="true">
+                                        <Setter Property="Background" Value="#FFEBF1F5"/>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </MenuItem.Style>
+                    </MenuItem>
+                </Menu>
+            </Border>
+        </Grid>
+        <Border Grid.Row="1" Background="#FFF8F8F8" BorderBrush="#FFC7C7C7" BorderThickness="0,0,1,0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel>
+                    <Border CornerRadius="8" Margin="10" Background="White" Height="auto">
+                        <Border.BitmapEffect>
+                            <DropShadowBitmapEffect Opacity="0.3" ShadowDepth="0"/>
+                        </Border.BitmapEffect>
+                        <StackPanel>
+                            <Border Background="{StaticResource ResourceBrushBlue}" Height="20" CornerRadius="8,8,0,0">
+                                <TextBlock Text="Фильтр" FontSize="12" Margin="10,0,0,2" Foreground="#FF464646" VerticalAlignment="Center"/>
+                            </Border>
+                            <Border Margin="20,10,20,10" CornerRadius="5" BorderBrush="#FFAFC4DC" BorderThickness="2" >
+                                <TextBox Margin="3" BorderThickness="0" Text="{Binding SearchString, UpdateSourceTrigger=PropertyChanged}"/>
+                            </Border>
+                            <Button Command="{Binding SelectAllTypeFilter}" CommandParameter="{Binding ElementName=ListTypeN}" >
+                                <Button.Template>
+                                    <ControlTemplate>
+                                        <Border Name="BorderButton" BorderThickness="0,0,0,1" BorderBrush="#FFCFCFCF" Height="30" Margin="10,0,10,0" Background="white" Cursor="Hand">
+                                            <DockPanel>
+                                                <TextBlock Text="Применить ко всем" Margin="10,0,0,0" Foreground="#FF464646" TextAlignment="Center" VerticalAlignment="Center" />
+                                                
+                                                <Border BorderThickness="1" BorderBrush="#FFAFC4DC" CornerRadius="8" Height="16" Width="30" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                                    <Ellipse Name="SelectAllFlag" Height="12" Width="12" Fill="#FFCF6464" HorizontalAlignment="Left" Margin="1"/>
+                                                </Border>
+                                            </DockPanel>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="true">
+                                                <Setter TargetName="BorderButton" Property="Background" Value="#FFEFF2F7"/>
+                                            </Trigger>
+                                            <DataTrigger Binding="{Binding IsSelectedAll}" Value="true">
+                                                <Setter TargetName="SelectAllFlag" Property="HorizontalAlignment" Value="Right"/>
+                                                <Setter TargetName="SelectAllFlag" Property="Fill" Value="#FF5B91B6"/>
+                                            </DataTrigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <ListBox ItemsSource="{Binding ArrayTypeObject}" Name="ListTypeN" BorderThickness="0" SelectionMode="Multiple">
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border x:Name="ItemBorder" BorderThickness="0,0,0,1" Height="30" Margin="10,0,10,0" Background="white">
+                                                        <Border.BorderBrush>
+                                                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                                                                <GradientStop Color="White" Offset="0"/>
+                                                                <GradientStop Color="White" Offset="1"/>
+                                                                <GradientStop Color="#FFECECEC" Offset="0.199"/>
+                                                                <GradientStop Color="#FFECECEC" Offset="0.774"/>
+                                                            </LinearGradientBrush>
+                                                        </Border.BorderBrush>
+                                                        <DockPanel>
+                                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                                <Image Source="{Binding ImageSource}" Margin="6"/>
+                                                                <TextBlock Text="{Binding Name}" TextTrimming="CharacterEllipsis"  Foreground="#FF464646" TextAlignment="Center" VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                            <Border BorderThickness="1" BorderBrush="#FFAFC4DC" CornerRadius="8" Height="16" Width="30" HorizontalAlignment="Right" Margin="0,0,10,0">
+                                                                <Ellipse Name="SelectFlag" Height="12" Width="12" Fill="#FFCF6464" HorizontalAlignment="Left" Margin="1"/>
+                                                            </Border>
+                                                        </DockPanel>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="ItemBorder" Property="Background" Value="#FFEFF2F7"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter TargetName="SelectFlag" Property="HorizontalAlignment" Value="Right"/>
+                                                            <Setter TargetName="SelectFlag" Property="Fill" Value="#FF5B91B6"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        
+                            <DockPanel Margin="20,10,20,10">
+                                <Button DockPanel.Dock="Left" Template="{StaticResource ButtonTemplate}" Content="Отменить" Height="25" Width="85" Command="{Binding CancelFilter}"/>
+                                <Button HorizontalAlignment="Right" 
+                                        DockPanel.Dock="Right" 
+                                        Template="{StaticResource ButtonTemplate}" 
+                                        Content="Применить" 
+                                        Height="25" 
+                                        Width="85" 
+                                        Command="{Binding SetFilter}"
+                                        CommandParameter="{Binding ElementName=ListTypeN, Path=SelectedItems}" />
+                            </DockPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <Grid Margin="10">
+                        <Grid.BitmapEffect>
+                            <DropShadowBitmapEffect Opacity="0.3" ShadowDepth="0"/>
+                        </Grid.BitmapEffect>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="20"/>
+                            <RowDefinition Height="8"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="36"/>
+                        </Grid.ColumnDefinitions>
+                        <Border Grid.Row="2" Grid.ColumnSpan="2" Background="White"/>
+                        <Rectangle Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Width="10" Height="10" Fill="White" />
+                        <Border Grid.Row="1" Grid.ColumnSpan="2" Background="{StaticResource ResourceBrushBlue}" Height="20" CornerRadius="8,20,20,0">
+                            <TextBlock Text="Отображаемые объекты" FontSize="12" Margin="10,0,0,2" Foreground="#FF464646" VerticalAlignment="Center"/>
+                        </Border>
+                        <Ellipse Grid.Column="1" Grid.RowSpan="3" Fill="{StaticResource ResourceBrushBlue}"/>
+
+                        <Button Grid.Column="1" Grid.RowSpan="3" Cursor="Hand" Command="{Binding AddObjectCommand}" 
+                            CommandParameter="{Binding ElementName=Map}" >
+                            <Button.Template>
+                                <ControlTemplate TargetType="Button">
+                                    <Grid>
+                                        <Ellipse Margin="3" Fill="#FFB87B13"/>
+                                        <Ellipse x:Name="OrangeCircle" Margin="4" Fill="#ffa200"/>
+                                        <TextBlock Text="+" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,1,8" FontSize="30" FontWeight="Bold"/>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="true">
+                                            <Setter TargetName="OrangeCircle" Property="Fill" Value="#FFE0C445"/>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Button.Template>
+                        </Button>
+
+                        <Border Grid.Row="3" Grid.ColumnSpan="2" CornerRadius="0,0,8,8" Background="White" Height="300">
+                            <ListBox
+                                
+                                 ItemsSource="{Binding ArrayMapObjects}" 
+                                 SelectedIndex="{Binding ItemSelection, ElementName=Map, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedItem="{Binding ObjectSelectedItem}"
+                                 BorderThickness="0"
+                                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                Margin="0,0,0,10" 
+                                SelectionChanged="ListBox_SelectionChanged"
+                                >
+                                <ListBox.ItemContainerStyle>
+                                    <Style TargetType="ListBoxItem">
+                                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="ListBoxItem">
+                                                    <Border x:Name="ItemBorder" BorderThickness="0,0,0,1" Height="30" Margin="10,0,10,0" Background="white">
+                                                        <Border.BorderBrush>
+                                                            <LinearGradientBrush EndPoint="1,1" StartPoint="0,0">
+                                                                <GradientStop Color="White" Offset="0"/>
+                                                                <GradientStop Color="White" Offset="1"/>
+                                                                <GradientStop Color="#FFECECEC" Offset="0.199"/>
+                                                                <GradientStop Color="#FFECECEC" Offset="0.774"/>
+                                                            </LinearGradientBrush>
+                                                        </Border.BorderBrush>
+                                                        <DockPanel>
+                                                            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
+                                                                <Image Source="{Binding TypeObject.ImageSource}" Margin="6"/>
+                                                                <TextBlock Text="{Binding Name}" Foreground="#FF464646" FontSize="10" TextTrimming="CharacterEllipsis" TextAlignment="Center" VerticalAlignment="Center" />
+                                                            </StackPanel>
+                                                        </DockPanel>
+                                                    </Border>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter TargetName="ItemBorder" Property="Background" Value="#FFEFF2F7"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsSelected" Value="True">
+                                                            <Setter TargetName="ItemBorder" Property="Background" Value="#FFA0BDD1"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </ListBox.ItemContainerStyle>
+                            </ListBox>
+                        </Border>
+
+                    </Grid>
+                
+                </StackPanel>
+            </ScrollViewer>
+           
+        </Border>
+    </Grid>
+</UserControl>
