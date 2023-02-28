@@ -85,13 +85,13 @@ namespace Users
                     {
                         using (var user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, ChangePasswordUser.UserName))
                         {
-                            user.SetPassword((isCheckedDefaultPassword ? "111111" : Password));
+                            user.SetPassword((isCheckedDefaultPassword ? "Nhfrnjhbcn20" : Password));
                             //Если галка стоит, то делаем пароль истекшим для того чтобы система попросила пользователя сменить пароль при входе
                             if (isChekedRequireChangePassword) user.ExpirePasswordNow();
                             //Разблокирует пользователя
                             if (isCheckedUnlockUser) user.UnlockAccount();
                             //Если галка на стандартном пароле стоит, то устанавливаем пароль 111111, если нет, то тот что вбит пользователем.
-                            user.SetPassword((isCheckedDefaultPassword ? "111111" : Password));
+                            user.SetPassword((isCheckedDefaultPassword ? "Nhfrnjhbcn20" : Password));
 
 
                             user.Save();

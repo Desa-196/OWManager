@@ -6,6 +6,6 @@
              xmlns:local="clr-namespace:Users.MapObjects"
              mc:Ignorable="d" >
     <Border Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="#3e7a37" BorderThickness="2" CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=UserControl}}">
-            <Image Source="{Binding ImageSource}" Margin="5"/>
+            <!--<Image Source="{Binding ImageSource}" Margin="5"/>-->
         </Border>
 </UserControl>

@@ -12,10 +12,10 @@
     </UserControl.InputBindings>
     <UserControl.Resources>
         <ResourceDictionary>
-             <ResourceDictionary.MergedDictionaries>
+            <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ButtonTemplate.xaml" />
-             </ResourceDictionary.MergedDictionaries>
-            
+            </ResourceDictionary.MergedDictionaries>
+
 
             <ControlTemplate x:Key="ButtonCopyTemplate">
                 <StackPanel Orientation="Horizontal" Cursor="Hand">
@@ -38,7 +38,7 @@
                 <GradientStop Color="#FF6F6F6F" Offset="0.766"/>
             </LinearGradientBrush>
 
-        
+
             <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
                 <Setter Property="Background" Value="White"/>
                 <Setter Property="Template">
@@ -125,9 +125,9 @@
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="0" Height="30" Margin="0,0,5,0" Command="{Binding History}" ToolTip="История поиска">
-                        
-                            <Image Source="Ресурсы\ico_History.png"/>
-                    
+
+                        <Image Source="Ресурсы\ico_History.png"/>
+
                         <Button.Template>
                             <ControlTemplate TargetType="Button">
                                 <Border x:Name="border" CornerRadius="7" Background="#313131">
@@ -173,11 +173,14 @@
             <ListBox Grid.Row="1" Name="ListUsers" HorizontalAlignment="Center" Margin="0,0,0,20" BorderThickness="0" Width="{Binding ActualWidth, ElementName=mainGrid}">
                 <ListBox.Template>
                     <ControlTemplate TargetType="ListBox">
-                        <ScrollViewer x:Name="Grid" Background="#FFF0F0F0">
+                        <ScrollViewer x:Name="Grid">
+                            <ScrollViewer.Background>
+                                <ImageBrush ImageSource="/Ресурсы/Background.jpg" ViewportUnits="Absolute" TileMode="Tile" Viewport="0 0 150 150"/>
+                            </ScrollViewer.Background>
                             <ItemsPresenter/>
-                    
+
                         </ScrollViewer>
-                     
+
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Grid" Property="Background" Value="#FFF0F0F0"/>
@@ -193,13 +196,13 @@
                 </ListBox.ItemContainerStyle>
                 <ListBox.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <WrapPanel Background="#FFF0F0F0" Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="{Binding ActualWidth, ElementName=mainGrid, Converter={StaticResource convertWidth}}"/>
+                        <WrapPanel  Orientation="Horizontal" HorizontalAlignment="Center" MaxWidth="{Binding ActualWidth, ElementName=mainGrid, Converter={StaticResource convertWidth}}"/>
                     </ItemsPanelTemplate>
                 </ListBox.ItemsPanel>
 
                 <ListBox.ItemTemplate>
-                   
-               
+
+
                     <DataTemplate>
                         <local:UserIteam/>
                     </DataTemplate>
