@@ -180,7 +180,6 @@
                             <ItemsPresenter/>
 
                         </ScrollViewer>
-
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter TargetName="Grid" Property="Background" Value="#FFF0F0F0"/>
@@ -190,7 +189,7 @@
                 </ListBox.Template>
                 <ListBox.ItemContainerStyle>
                     <Style>
-                        <Setter Property="ItemsControl.Margin" Value="0"/>
+                        <Setter Property="ItemsControl.Margin" Value="10"/>
                         <Setter Property="ItemsControl.Padding" Value="0"/>
                     </Style>
                 </ListBox.ItemContainerStyle>
