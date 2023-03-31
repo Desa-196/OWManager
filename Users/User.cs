@@ -8,6 +8,9 @@ using System.Threading.Tasks;
 
 namespace Users
 {
+    /// <summary>
+    /// Класс описывает пользователей
+    /// </summary>
     public class User:INotifyPropertyChanged
     {
 

@@ -21,6 +21,11 @@ namespace Users
             Connect = new SQLiteConnection("Data Source=" + path + "\\user_id.db", true);
             Connect.Open();
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="UserLoginDomain"></param>
+        /// <returns></returns>
         public static string GetUserAxaptaName(string UserLoginDomain) 
         {
             var Command_SQL = new SQLiteCommand

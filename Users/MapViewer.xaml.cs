@@ -54,14 +54,18 @@ namespace Users
             {   
                 SetValue(MapImageSourceProperty, value);
             }
-        }public int MapId
+        }
+        
+        public int MapId
         {
             get
             { 
                 return (int)GetValue(MapIdProperty); 
             }
             set
-            {   
+            {
+                System.Windows.MessageBox.Show(value.ToString());
+                Normal.Execute(null);
                 SetValue(MapIdProperty, value);
             }
         }

@@ -218,10 +218,12 @@ namespace Users
             {
                 return new MyCommand((obj) =>
                 {
-                   
+
+                    Map.Normal.Execute(null);
                     MapImage = SQLiteBase.GetMapImageSource((int)obj);
                     ArrayMapObjects.Clear();
 
+   
                     MapId = (int)obj;
                     
                     foreach (MapObject MapObject in SQLiteBase.GetObjectMap((int)obj))
