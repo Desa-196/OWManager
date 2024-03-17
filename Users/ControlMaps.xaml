@@ -252,7 +252,7 @@
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                                                 <Image Source="{Binding TypeObject.ImageSource}" Margin="6"/>
-                                                                <TextBlock Text="{Binding Name}" Foreground="#FF464646" FontSize="10" TextTrimming="CharacterEllipsis" TextAlignment="Center" VerticalAlignment="Center" />
+                                                                <TextBox IsReadOnly="True" Text="{Binding Name}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF464646" FontSize="10"  TextAlignment="Center" VerticalAlignment="Center" />
                                                             </StackPanel>
                                                         </DockPanel>
                                                     </Border>

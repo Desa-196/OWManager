@@ -54,8 +54,27 @@
                 <TextBlock Text="Имя:" Width="100" Margin="0,0,0,5"/>
                 <TextBox Text="{Binding ObjectName, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right"/>
             </DockPanel>
+            <DockPanel Margin="30,10,30,0">
+                <StackPanel>
+                    <TextBlock Text="Описание:" Width="100" Margin="0,0,0,5"/>
+                    <TextBlock Text="Осталось символов:" Width="100" Margin="0,0,0,0" FontSize="10"/>
+                    <TextBlock Text="{Binding CountChar}" Width="100" Margin="0,0,0,5" FontSize="20" Foreground="#FF7CA0CA"/>
+                </StackPanel>
+                <TextBox Text="{Binding ObjectDescription, UpdateSourceTrigger=PropertyChanged}" DockPanel.Dock="Right" VerticalScrollBarVisibility="Auto" Height="150" TextWrapping="Wrap" AcceptsReturn ="True"/>
+            </DockPanel>
         </StackPanel>
-        <Button Grid.Column="0" Grid.Row="2" Margin="15" Content="Создать" Template="{StaticResource ButtonTemplate}" Command="{Binding AddObjectOnMap}"/>
+        <Button Grid.Column="0" Grid.Row="2" Margin="15" Template="{StaticResource ButtonTemplate}" Command="{Binding AddObjectOnMap}">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="Content" Value="Создать"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CreateTypeWindow}" Value="false">
+                            <Setter Property="Content" Value="Изменить"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
         <Button Grid.Column="1" Grid.Row="2" Margin="15" Content="Отмена" Template="{StaticResource ButtonTemplate}" Command="{Binding Close}"/>
 
     </Grid>

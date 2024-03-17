@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Users
 {
@@ -39,6 +40,32 @@ namespace Users
             {
                 _YCoordinate = value;
                 OnPropertyChanged("YCoordinate");
+            }
+        }
+        public string _Description = "dsfdsfdsfdsfdsfsd";
+        public string Description
+        {
+            get { return _Description; }
+            set
+            {
+                _Description = value;
+                OnPropertyChanged("Description");
+            }
+        }
+
+        public MyCommand ChangeObject
+        {
+            get
+            {
+                return new MyCommand((obj) =>
+                {
+                    (Application.Current.MainWindow as MainWindow).EnableBlur = true;
+                    (Application.Current.MainWindow as MainWindow).TypeMessage = new Message.AddObject(this);
+                },
+                (obj) =>
+                {
+                    return true;
+                });
             }
         }
 

@@ -56,9 +56,21 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid ToolTipService.ShowDuration="1000000">
+                            <Grid.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Переместить на другую карту"></MenuItem>
+                                    <MenuItem Header="Удалить" Click="MenuItem_Delete"></MenuItem>
+                                    <MenuItem Header="Изменить" Command="{Binding ChangeObject}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}"></MenuItem>
+                                </ContextMenu>
+                            </Grid.ContextMenu>
+                            <!-- 
                             <Grid.ToolTip>
-                                <TextBlock Text="{Binding Name}"/>
+                                <StackPanel>
+                                    <TextBlock Text="{Binding Name}"/>
+                                    <TextBlock Text="{Binding Description}"/>
+                                </StackPanel>
                             </Grid.ToolTip>
+                            -->
                             <Border Name="AttentionBorder" Background="Red" Height="40" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="40">
                                 <Border.Style>
                                     <Style TargetType="Border">
@@ -85,7 +97,26 @@
                                     </Style>
                                 </Border.Style>
                             </Border>
-                            <Border Background="White" BorderBrush="{Binding TypeObject.Color}" BorderThickness="2" Height="30" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="40" ToolTip="{Binding Name}">
+                            <Border Background="White" BorderBrush="{Binding TypeObject.Color}" BorderThickness="2" Height="30" Width="30" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="40">
+                                <Border.ToolTip>
+                                    <StackPanel>
+                                        <TextBlock Text="Имя:" FontSize="9" FontWeight="Bold" Foreground="#FF232323"/>
+                                        <TextBlock Margin="5,0,0,0" Text="{Binding Name}"/>
+                                        <StackPanel>
+                                            <TextBlock Text="Описание:" FontSize="9" FontWeight="Bold" Foreground="#FF232323"/>
+                                            <TextBlock Margin="5,0,0,0" Height="auto" Text="{Binding Description}"/>
+                                            <StackPanel.Style>
+                                                <Style TargetType="StackPanel">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding Description}" Value="">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </StackPanel.Style>
+                                        </StackPanel>
+                                    </StackPanel>
+                                </Border.ToolTip>
                                 <Image Source="{Binding TypeObject.ImageSource}" Margin="3"/>
                             </Border>
                             <Border CornerRadius="15" Background="White" BorderBrush="Black" BorderThickness="1" HorizontalAlignment="Right" VerticalAlignment="Top" MouseLeftButtonDown="Border_MouseLeftButtonDown">

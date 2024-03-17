@@ -64,6 +64,7 @@ namespace Users
                 return null;
             }
         }
+
         public static string GetNameLocationsFromId(int Id) 
         {
             var Command_SQL = new SQLiteCommand
@@ -174,6 +175,7 @@ namespace Users
                         );
                     ListTypesObjects[ListTypesObjects.Count - 1].Id = Convert.ToInt32(Result["id_object"]);
                     ListTypesObjects[ListTypesObjects.Count - 1].Name = Result["name"].ToString();
+                    ListTypesObjects[ListTypesObjects.Count - 1].Description = Result["descriptions"].ToString();
                 }
                 return ListTypesObjects;
             }
@@ -214,6 +216,37 @@ namespace Users
             else return null;
         }
 
+        public static bool DeleteElement(int? elementId)
+        {
+            if (elementId != null)
+            {
+                var Command_SQL = new SQLiteCommand
+                    ($@"
+                    DELETE FROM ObjectsMap
+                    WHERE id={elementId}", Connect
+                    );
+                Command_SQL.ExecuteNonQuery();
+            }
+            return true;
+        }
+
+        public static bool EditObject(MapObject editObject) 
+        {
+            if (editObject != null)
+            {
+                var Command_SQL = new SQLiteCommand
+                    ($@"
+                    UPDATE ObjectsMap
+                    SET name = '{editObject.Name}',
+	                    type_object = {editObject.TypeObject.Id},
+	                    descriptoins = '{editObject.Description}'
+                    WHERE id = {editObject.Id}
+                    ");
+                Command_SQL.ExecuteNonQuery();
+            }
+            return true;
+        }
+
         public static bool SaveElements(ObservableCollection<MapObject> ArraySaveObjects, int Id) 
         {
             foreach (MapObject SaveObject in ArraySaveObjects)
@@ -230,6 +263,7 @@ namespace Users
                         Command_SQL = new SQLiteCommand(
                             $"UPDATE ObjectsMap SET " +
                             "name = '" + SaveObject.Name + "', " +
+                            "descriptions = '" + SaveObject.Description + "', " +
                             "x_coordinate = " + SaveObject.XCoordinate.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US")) + ", "+
                             "y_coordinate = " + SaveObject.YCoordinate.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US")) + ", "+
                             "type_object = " + SaveObject.TypeObject.Id+" where id=" + SaveObject.Id, Connect);
@@ -240,8 +274,9 @@ namespace Users
                     {
                         
                         Command_SQL = new SQLiteCommand(
-                            "INSERT INTO ObjectsMap (name, x_coordinate, y_coordinate, type_object, locations_id) VALUES (" +
+                            "INSERT INTO ObjectsMap (name, descriptions, x_coordinate, y_coordinate, type_object, locations_id) VALUES (" +
                             "'" + SaveObject.Name + "', " +
+                            "'" + SaveObject.Description + "', " +
                             SaveObject.XCoordinate.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US")) + ", " +
                             SaveObject.YCoordinate.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US")) + ", " +
                             SaveObject.TypeObject.Id+", " +
@@ -259,8 +294,9 @@ namespace Users
                 else
                 {
                     var  Command_SQL = new SQLiteCommand(
-                        "INSERT INTO ObjectsMap (name, x_coordinate, y_coordinate, type_object, locations_id) VALUES (" +
+                        "INSERT INTO ObjectsMap (name, descriptions, x_coordinate, y_coordinate, type_object, locations_id) VALUES (" +
                         "'" + SaveObject.Name + "', " +
+                        "'" + SaveObject.Description + "', " +
                         SaveObject.XCoordinate.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US")) + ", " +
                         SaveObject.YCoordinate.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US")) + ", " +
                         SaveObject.TypeObject.Id + ", " +

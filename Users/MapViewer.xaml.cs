@@ -153,12 +153,13 @@ namespace Users
             ItemSelection = -1;
 
         }
-        public void AddObject(string Name, TypeObject Type)
+        public void AddObject(string Name, string description, TypeObject Type)
         {
             double CreateObjectCoordinateX = ((this.ActualWidth / 2) - CoordinateMap.X) / WidthMap;
             double CreateObjectCoordinateY = ((this.ActualHeight / 2) - CoordinateMap.Y) /HeightMap;
             SourceElements.Add(new MapObject(CreateObjectCoordinateX, CreateObjectCoordinateY, Type));
             SourceElements[SourceElements.Count - 1].Name = Name;
+            SourceElements[SourceElements.Count - 1].Description = description;
             ItemSelection = SourceElements.Count - 1;
             (Application.Current.MainWindow as MainWindow).EnableBlur = false;
         }
@@ -273,6 +274,9 @@ namespace Users
                 });
             }
         }
+        /// <summary>
+        /// Комманда отключает увеличение карты
+        /// </summary>
         public MyCommand Normal
         {
             get
@@ -288,6 +292,7 @@ namespace Users
                 });
             }
         }
+
         public MyCommand Save
         {
             get
@@ -492,5 +497,15 @@ namespace Users
             InitializeCoordinateY = (IsMoveObject.DataContext as MapObject).YCoordinate;
         }
 
+        private void MenuItem_Delete(object sender, RoutedEventArgs e)
+        {
+            var MapObject = ((sender as MenuItem).DataContext as MapObject);
+            MessageBoxResult result = System.Windows.MessageBox.Show($"Вы уверены что хотите удалить '{MapObject.Name}'?","Удаление", MessageBoxButton.OKCancel);
+            if (result == MessageBoxResult.OK)
+            {
+                SQLiteBase.DeleteElement(MapObject.Id);
+                SourceElements.Remove(MapObject);
+            }
+        }
     }
 }
