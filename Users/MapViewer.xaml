@@ -72,6 +72,7 @@
                                 </StackPanel>
                             </Grid.ToolTip>
                             -->
+                            <Image Source="/shadow.png" Width="43" Height="43" Opacity="0.9" VerticalAlignment="Center" HorizontalAlignment="Center"/>
                             <Border Name="AttentionBorder" Background="Red" Height="60" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="60" IsHitTestVisible="False">
                                 <Border.Effect>
                                     <BlurEffect Radius="20"/>
@@ -155,9 +156,11 @@
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                     <Border Padding="0">
                                         <ContentPresenter>
+                                            <!--
                                             <ContentPresenter.Effect>
                                                 <DropShadowEffect x:Name="Shadow" Opacity="0.5" ShadowDepth="4"/>
                                             </ContentPresenter.Effect>
+                                              -->
                                         </ContentPresenter>
                                     </Border>
 
@@ -177,9 +180,9 @@
                                                 <Condition Property="IsMouseOver" Value="true"/>
                                             </MultiTrigger.Conditions>
                                             <MultiTrigger.Setters>
-                                                <Setter Property="BitmapEffect">
+                                                <Setter Property="Effect">
                                                     <Setter.Value>
-                                                        <DropShadowBitmapEffect  Opacity="0.2" ShadowDepth="10"/>
+                                                        <DropShadowEffect  Opacity="0.2" ShadowDepth="10"/>
                                                     </Setter.Value>
                                                 </Setter>
                                                 <Setter Property="Width" Value="44"/>
@@ -191,11 +194,11 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
-                        <Setter Property="Margin" Value="-20,-20,0,0"/>
+                        <Setter Property="Margin" Value="-22,-22,0,0"/>
                         <Setter Property="HorizontalAlignment" Value="Center"/>
                         <Setter Property="VerticalAlignment" Value="Center"/>
-                        <Setter Property="Width" Value="40"/>
-                        <Setter Property="Height" Value="40"/>
+                        <Setter Property="Width" Value="44"/>
+                        <Setter Property="Height" Value="44"/>
                         <Setter Property="Canvas.Left">
                             <Setter.Value>
                                 <MultiBinding Converter="{StaticResource ConvertorCoordinate}">

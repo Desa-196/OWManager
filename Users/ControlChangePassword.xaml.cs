@@ -85,19 +85,27 @@ namespace Users
                     {
                         using (var user = UserPrincipal.FindByIdentity(context, IdentityType.SamAccountName, ChangePasswordUser.UserName))
                         {
-                            user.SetPassword((isCheckedDefaultPassword ? "Nhfrnjhbcn20" : Password));
-                            //Если галка стоит, то делаем пароль истекшим для того чтобы система попросила пользователя сменить пароль при входе
-                            if (isChekedRequireChangePassword) user.ExpirePasswordNow();
-                            //Разблокирует пользователя
-                            if (isCheckedUnlockUser) user.UnlockAccount();
-                            //Если галка на стандартном пароле стоит, то устанавливаем пароль 111111, если нет, то тот что вбит пользователем.
-                            user.SetPassword((isCheckedDefaultPassword ? "Nhfrnjhbcn20" : Password));
+                            try
+                            {
+                                user.SetPassword((isCheckedDefaultPassword ? "Nhfrnjhbcn20" : Password));
+                                //Если галка стоит, то делаем пароль истекшим для того чтобы система попросила пользователя сменить пароль при входе
+                                if (isChekedRequireChangePassword) user.ExpirePasswordNow();
+                                //Разблокирует пользователя
+                                if (isCheckedUnlockUser) user.UnlockAccount();
+                                //Если галка на стандартном пароле стоит, то устанавливаем пароль 111111, если нет, то тот что вбит пользователем.
+                                user.SetPassword((isCheckedDefaultPassword ? "Nhfrnjhbcn20" : Password));
 
 
-                            user.Save();
+                                user.Save();
+                                (Application.Current.MainWindow as MainWindow).EnableBlur = false;
+                            }
+                            catch(System.DirectoryServices.AccountManagement.PasswordException e) 
+                            {
+                                System.Windows.MessageBox.Show(e.Message);
+                            }
                         }
                     }
-                    (Application.Current.MainWindow as MainWindow).EnableBlur = false;
+
 
                 },
                 (obj) =>
