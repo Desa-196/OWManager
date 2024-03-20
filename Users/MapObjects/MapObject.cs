@@ -12,7 +12,16 @@ namespace Users
     {
         public TypeObject TypeObject { get; set; }
 
-        public int? Id = null;
+        public int? _Id = null;
+        public int? Id
+        {
+            get { return _Id; }
+            set
+            {
+                _Id = value;
+                OnPropertyChanged("Id");
+            }
+        }
 
         public string _Name;
         public string Name {
@@ -42,7 +51,7 @@ namespace Users
                 OnPropertyChanged("YCoordinate");
             }
         }
-        public string _Description = "dsfdsfdsfdsfdsfsd";
+        public string _Description;
         public string Description
         {
             get { return _Description; }

@@ -320,6 +320,28 @@ namespace Users
         }
 
 
+        public MyCommand ViewUsers
+        {
+            get
+            {
+                return new MyCommand((obj) =>
+                {
+
+                    (Application.Current.MainWindow as MainWindow).SelectedMenuId = 0;
+                    ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).SearchComputerName = (string)obj;
+                    ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).SearchTelephoneNumber = string.Empty;
+                    ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).SearchUserName = string.Empty;
+                    ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).Search.Execute(null);
+
+
+                },
+                (obj) =>
+                {
+                    return true;
+                });
+            }
+        }
+
         public string MenuImage { get; set; } = "Ресурсы/menu/MenuIcoMaps.png";
         public string MenuImageSelected { get; set; } = "Ресурсы/menu/MenuIcoMapsSelected.png";
         public ControlMaps()

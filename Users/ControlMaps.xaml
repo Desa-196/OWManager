@@ -11,9 +11,9 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="ButtonTemplate.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
+
             <SolidColorBrush x:Key="ResourceBrushBlue" Color="#FFAFCDDC" />
-            
+
             <local:WidthCanvasMapConvertor x:Key="WidthCanvasMapConvertor"/>
             <local:HeightCanvasMapConvertor x:Key="HeightCanvasMapConvertor"/>
             <DataTemplate x:Key="ListItemTemplSelected">
@@ -54,6 +54,54 @@
                 MapImageSource="{Binding DataContext.MapImage}"
                 MapId="{Binding DataContext.MapId}"
             />
+            <Border 
+                BorderBrush="Black" 
+                BorderThickness="0.5" 
+                Background="White" 
+                CornerRadius="8" 
+                Width="400" Height="200" 
+                VerticalAlignment="Top" HorizontalAlignment="Right"
+                Margin="5,40,5,5" 
+                DataContext="{Binding ElementName=ListObject, Path=SelectedItem}">
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.3" ShadowDepth="0"/>
+                </Border.Effect>
+                <StackPanel>
+                    <Border Background="{StaticResource ResourceBrushBlue}" Height="30" CornerRadius="8,8,0,0">
+                        <Grid Margin="10,0,10,0" >
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="40"/>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="100"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Имя: " VerticalAlignment="Center"/>
+                            <TextBox Grid.Column="1" IsReadOnly="True" BorderThickness="0" Text="{Binding Name}" TextWrapping="Wrap" VerticalAlignment="Center" Background="{x:Null}"/>
+                            <Button Grid.Column="2" Template="{StaticResource ButtonTemplate}"  Content="Пользователи" Height="20" 
+                                    Command="{Binding ElementName=mainGrid, Path=DataContext.ViewUsers}" CommandParameter="{Binding Name}">
+                                <Button.Style>
+                                    <Style TargetType="Button">
+                                        <Setter Property="Visibility" Value="Collapsed"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=DataContext.TypeObject.Id}" Value="1">
+                                                <Setter Property="Visibility" Value="Visible"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                        </Grid>
+                    </Border>
+                    <StackPanel Margin="10,3,10,0" Orientation="Horizontal">
+                        <TextBlock Text="ID: " Width="80"/>
+                        <TextBox IsReadOnly="True" BorderThickness="0" Text="{Binding Id}"/>
+                    </StackPanel>
+                    <StackPanel Margin="10,3,10,0">
+                        <TextBlock Text="Описание: " Width="80" HorizontalAlignment="Left"/>
+                        <TextBox IsReadOnly="True" Text="{Binding Description}" Height="120" HorizontalScrollBarVisibility="Auto"/>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+            <!--
             <Button 
                 Margin="0,5,20,0"
                 Height="30" 
@@ -71,10 +119,11 @@
                     </ControlTemplate>
                 </Button.Template>
             </Button>
+            -->
             <Border BorderThickness="2" BorderBrush="#FFAFC4DC"  Background="{Binding ElementName=MenuLocations, Path=Background}" Margin="60,5,0,0" Height="30" VerticalAlignment="Top" HorizontalAlignment="Left" CornerRadius="10">
-                <Border.BitmapEffect>
-                    <DropShadowBitmapEffect Opacity="0.3"/>
-                </Border.BitmapEffect>
+                <Border.Effect>
+                    <DropShadowEffect Opacity="0.3"/>
+                </Border.Effect>
                 <Menu  Height="30" BorderThickness="0" Margin="20,0,20,0" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <MenuItem x:Name="MenuLocations" Header="{Binding NameSetLocations}" Height="30" ItemsSource="{Binding Locations}" BorderThickness="0">
                         <MenuItem.Style>
@@ -95,9 +144,9 @@
             <ScrollViewer VerticalScrollBarVisibility="Auto">
                 <StackPanel>
                     <Border CornerRadius="8" Margin="10" Background="White" Height="auto">
-                        <Border.BitmapEffect>
-                            <DropShadowBitmapEffect Opacity="0.3" ShadowDepth="0"/>
-                        </Border.BitmapEffect>
+                        <Border.Effect>
+                            <DropShadowEffect Opacity="0.3" ShadowDepth="0"/>
+                        </Border.Effect>
                         <StackPanel>
                             <Border Background="{StaticResource ResourceBrushBlue}" Height="20" CornerRadius="8,8,0,0">
                                 <TextBlock Text="Фильтр" FontSize="12" Margin="10,0,0,2" Foreground="#FF464646" VerticalAlignment="Center"/>
@@ -111,7 +160,7 @@
                                         <Border Name="BorderButton" BorderThickness="0,0,0,1" BorderBrush="#FFCFCFCF" Height="30" Margin="10,0,10,0" Background="white" Cursor="Hand">
                                             <DockPanel>
                                                 <TextBlock Text="Применить ко всем" Margin="10,0,0,0" Foreground="#FF464646" TextAlignment="Center" VerticalAlignment="Center" />
-                                                
+
                                                 <Border BorderThickness="1" BorderBrush="#FFAFC4DC" CornerRadius="8" Height="16" Width="30" HorizontalAlignment="Right" Margin="0,0,10,0">
                                                     <Ellipse Name="SelectAllFlag" Height="12" Width="12" Fill="#FFCF6464" HorizontalAlignment="Left" Margin="1"/>
                                                 </Border>
@@ -169,7 +218,7 @@
                                     </Style>
                                 </ListBox.ItemContainerStyle>
                             </ListBox>
-                        
+
                             <DockPanel Margin="20,10,20,10">
                                 <Button DockPanel.Dock="Left" Template="{StaticResource ButtonTemplate}" Content="Отменить" Height="25" Width="85" Command="{Binding CancelFilter}"/>
                                 <Button HorizontalAlignment="Right" 
@@ -185,9 +234,9 @@
                     </Border>
 
                     <Grid Margin="10">
-                        <Grid.BitmapEffect>
-                            <DropShadowBitmapEffect Opacity="0.3" ShadowDepth="0"/>
-                        </Grid.BitmapEffect>
+                        <Grid.Effect>
+                            <DropShadowEffect Opacity="0.3" ShadowDepth="0"/>
+                        </Grid.Effect>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="8"/>
                             <RowDefinition Height="20"/>
@@ -225,7 +274,7 @@
 
                         <Border Grid.Row="3" Grid.ColumnSpan="2" CornerRadius="0,0,8,8" Background="White" Height="300">
                             <ListBox
-                                
+                                Name="ListObject"
                                  ItemsSource="{Binding ArrayMapObjects}" 
                                  SelectedIndex="{Binding ItemSelection, ElementName=Map, UpdateSourceTrigger=PropertyChanged}"
                                 SelectedItem="{Binding ObjectSelectedItem}"
@@ -252,7 +301,7 @@
                                                         <DockPanel>
                                                             <StackPanel DockPanel.Dock="Left" Orientation="Horizontal">
                                                                 <Image Source="{Binding TypeObject.ImageSource}" Margin="6"/>
-                                                                <TextBox IsReadOnly="True" Text="{Binding Name}" Background="{x:Null}" BorderBrush="{x:Null}" Foreground="#FF464646" FontSize="10"  TextAlignment="Center" VerticalAlignment="Center" />
+                                                                <TextBlock Text="{Binding Name}" Foreground="#FF464646" FontSize="10"  TextAlignment="Center" VerticalAlignment="Center" />
                                                             </StackPanel>
                                                         </DockPanel>
                                                     </Border>
@@ -273,10 +322,10 @@
                         </Border>
 
                     </Grid>
-                
+
                 </StackPanel>
             </ScrollViewer>
-           
+
         </Border>
     </Grid>
 </UserControl>

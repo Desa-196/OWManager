@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Users"
         mc:Ignorable="d"
-        Title="Пользователя" Height="500" Width="800" MinHeight="400" MinWidth="800" WindowStartupLocation="CenterOwner"
+        Title="Пользователя" Height="500" Width="1100" MinHeight="400" MinWidth="1100" WindowStartupLocation="CenterOwner"
         FocusManager.FocusedElement="{Binding FocusElement, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" >
     <Window.Resources>
         <local:InvertBool x:Key="invertBool"/>

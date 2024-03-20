@@ -25,12 +25,32 @@ namespace Users
 
         System.Drawing.Size SourceMapSize;
 
+        public MapObject SelectedObject
+        {
+            get
+            {
+                return (MapObject)GetValue(SelectedObjectProperty);
+            }
+            set
+            {
+                SetValue(SelectedObjectProperty, value);
+            }
+        }
+
+
         public int ItemSelection
         {
             get
-            { return (int)GetValue(ItemSelectionProperty); }
+            { 
+                return (int)GetValue(ItemSelectionProperty);
+            }
             set
             {
+                if (SourceElements != null)
+                {
+                    SelectedObject = SourceElements.Where(x => x.Id == value).FirstOrDefault();
+
+                }
                 SetValue(ItemSelectionProperty, value);
             }
         }
@@ -77,7 +97,10 @@ namespace Users
         "SourceElements", typeof(ObservableCollection<MapObject>), typeof(MapViewer));
         
         public static readonly DependencyProperty ItemSelectionProperty = DependencyProperty.Register(
-        "ItemSelection", typeof(int), typeof(MapViewer));
+        "ItemSelection", typeof(int), typeof(MapViewer));  
+        
+        public static readonly DependencyProperty SelectedObjectProperty = DependencyProperty.Register(
+        "SelectedObject", typeof(MapObject), typeof(MapViewer));
         
         public static readonly DependencyProperty MapImageSourceProperty = DependencyProperty.Register(
         "MapImageSource", typeof(string), typeof(MapViewer), new FrameworkPropertyMetadata(null,

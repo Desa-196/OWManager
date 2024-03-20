@@ -35,6 +35,7 @@
             <ListBox 
                 ItemsSource="{Binding SourceElements, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                 SelectedIndex="{Binding ItemSelection, RelativeSource={RelativeSource AncestorType=UserControl}}" 
+                SelectedItem="{Binding SelectedObjectB}"
                 x:Name="MapsImage" 
                 Height="{Binding HeightMap, RelativeSource={RelativeSource AncestorType=UserControl}}" 
                 Width="{Binding WidthMap, RelativeSource={RelativeSource AncestorType=UserControl}}" 
@@ -71,7 +72,10 @@
                                 </StackPanel>
                             </Grid.ToolTip>
                             -->
-                            <Border Name="AttentionBorder" Background="Red" Height="40" Width="40" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="40">
+                            <Border Name="AttentionBorder" Background="Red" Height="60" Width="60" HorizontalAlignment="Center" VerticalAlignment="Center" CornerRadius="60" IsHitTestVisible="False">
+                                <Border.Effect>
+                                    <BlurEffect Radius="20"/>
+                                </Border.Effect>
                                 <Border.Style>
                                     <Style TargetType="Border">
                                         <Setter Property="Visibility" Value="Collapsed"/>
@@ -151,18 +155,18 @@
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                     <Border Padding="0">
                                         <ContentPresenter>
-                                            <ContentPresenter.BitmapEffect>
-                                                <DropShadowBitmapEffect x:Name="Shadow" Opacity="0.5" ShadowDepth="4"/>
-                                            </ContentPresenter.BitmapEffect>
+                                            <ContentPresenter.Effect>
+                                                <DropShadowEffect x:Name="Shadow" Opacity="0.5" ShadowDepth="4"/>
+                                            </ContentPresenter.Effect>
                                         </ContentPresenter>
                                     </Border>
 
                                     <ControlTemplate.Triggers>
 
                                         <Trigger Property="IsSelected" Value="true">
-                                            <Setter Property="Width" Value="50"/>
-                                            <Setter Property="Height" Value="50"/>
-                                            <Setter Property="Margin" Value="-25,-25,0,0"/>
+                                            <Setter Property="Width" Value="60"/>
+                                            <Setter Property="Height" Value="60"/>
+                                            <Setter Property="Margin" Value="-30,-30,0,0"/>
                                             <Setter Property="Canvas.ZIndex" Value="1000000"/>
                                         </Trigger>
 
