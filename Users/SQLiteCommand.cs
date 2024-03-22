@@ -230,7 +230,8 @@ namespace Users
             return true;
         }
 
-        public static bool EditObject(MapObject editObject) 
+
+        public static bool EditObject(MapObject editObject)
         {
             if (editObject != null)
             {
@@ -239,9 +240,9 @@ namespace Users
                     UPDATE ObjectsMap
                     SET name = '{editObject.Name}',
 	                    type_object = {editObject.TypeObject.Id},
-	                    descriptoins = '{editObject.Description}'
+	                    descriptions = '{editObject.Description}'
                     WHERE id = {editObject.Id}
-                    ");
+                    ", Connect);
                 Command_SQL.ExecuteNonQuery();
             }
             return true;

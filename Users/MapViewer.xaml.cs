@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,12 +15,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Users
 {
     
     public partial class MapViewer : UserControl, INotifyPropertyChanged
     {
+
+        Point coordinateClickContextMenu;
 
         bool IsMapMove = false;
 
@@ -174,19 +178,29 @@ namespace Users
             Application.Current.MainWindow.MouseMove += Image_MouseMove;
             Application.Current.MainWindow.MouseUp += Image_MouseLeftButtonUp;
             ItemSelection = -1;
-
         }
-        public void AddObject(string Name, string description, TypeObject Type)
+        public void AddObject(string Name, string description, TypeObject Type, Point addObjectCoordinate)
         {
-            double CreateObjectCoordinateX = ((this.ActualWidth / 2) - CoordinateMap.X) / WidthMap;
-            double CreateObjectCoordinateY = ((this.ActualHeight / 2) - CoordinateMap.Y) /HeightMap;
+            double CreateObjectCoordinateX;
+            double CreateObjectCoordinateY;
+
+            if (addObjectCoordinate.X == 0 && addObjectCoordinate.Y == 0)
+            {
+                CreateObjectCoordinateX = ((this.ActualWidth / 2) - CoordinateMap.X) / WidthMap;
+                CreateObjectCoordinateY = ((this.ActualHeight / 2) - CoordinateMap.Y) / HeightMap;
+            }
+            else
+            {
+                CreateObjectCoordinateX = addObjectCoordinate.X;
+                CreateObjectCoordinateY = addObjectCoordinate.Y;
+            }
             SourceElements.Add(new MapObject(CreateObjectCoordinateX, CreateObjectCoordinateY, Type));
             SourceElements[SourceElements.Count - 1].Name = Name;
             SourceElements[SourceElements.Count - 1].Description = description;
             ItemSelection = SourceElements.Count - 1;
             (Application.Current.MainWindow as MainWindow).EnableBlur = false;
+            Save.Execute(null);
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected virtual void OnPropertyChanged(string propertyName)
@@ -330,7 +344,41 @@ namespace Users
                 });
             }
         }
-        
+
+        public MyCommand AddObjectCommand
+        {
+            get
+            {
+                return new MyCommand((obj) =>
+                {
+                    (Application.Current.MainWindow as MainWindow).EnableBlur = true;
+                    (Application.Current.MainWindow as MainWindow).TypeMessage = new Message.AddObject(this);
+
+                },
+                (obj) =>
+                {
+                    return true;
+                });
+            }
+        }
+
+        public MyCommand AddObjectContextMenu
+        {
+            get
+            {
+                return new MyCommand((obj) =>
+                {
+                    //System.Windows.MessageBox.Show(obj.GetType().ToString());
+                    System.Windows.MessageBox.Show("dfsfsdf");
+
+                },
+                (obj) =>
+                {
+                    return true;
+                });
+            }
+        }
+
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && sender is ListBox)
@@ -347,6 +395,10 @@ namespace Users
                 }
 
             }
+            if (e.RightButton == MouseButtonState.Pressed && sender is ListBox)
+            {
+                coordinateClickContextMenu = new Point(e.GetPosition(sender as ListBox).X / (sender as ListBox).ActualWidth, e.GetPosition(sender as ListBox).Y / (sender as ListBox).ActualHeight);
+            }
         }
 
         Point CoordinateMouseOnObject;
@@ -354,6 +406,7 @@ namespace Users
         double InitializeCoordinateX;
         double InitializeCoordinateY;
         Border IsMoveObject;
+
         private void Image_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (IsMapMove == false && ImagePress is ListBox)
@@ -363,6 +416,7 @@ namespace Users
             ImagePress = null;
             IsMoveObject = null;
             MapsImage.IsEnabled = true;
+            Save.Execute(null);
         }
 
         private void Image_MouseMove(object sender, MouseEventArgs e)
@@ -529,6 +583,21 @@ namespace Users
                 SQLiteBase.DeleteElement(MapObject.Id);
                 SourceElements.Remove(MapObject);
             }
+        }
+
+        private void SearchUser(object sender, RoutedEventArgs e)
+        {
+            (Application.Current.MainWindow as MainWindow).SelectedMenuId = 0;
+            ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).SearchComputerName = ((sender as MenuItem).DataContext as MapObject).Name;
+            ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).SearchTelephoneNumber = string.Empty;
+            ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).SearchUserName = string.Empty;
+            ((Application.Current.MainWindow as MainWindow).SelectedObj as UsersViewer).Search.Execute(null);
+        }
+
+        private void AddContextMenuClick(object sender, RoutedEventArgs e)
+        {
+            (Application.Current.MainWindow as MainWindow).EnableBlur = true;
+            (Application.Current.MainWindow as MainWindow).TypeMessage = new Message.AddObject(this, coordinateClickContextMenu);
         }
     }
 }

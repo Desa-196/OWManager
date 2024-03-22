@@ -23,6 +23,8 @@ namespace Users.Message
 
         MapViewer Sender;
 
+        Point addObjectCoordinate;
+
         private const uint maxCharCount = 500;
 
         private uint _CountChar = 500;
@@ -95,6 +97,17 @@ namespace Users.Message
 
             ArrayTypeObject = SQLiteBase.GetTypeObjectMap();
         }
+        public AddObject(MapViewer sender, Point addObjectCoordinate)
+        {
+            this.addObjectCoordinate = addObjectCoordinate;
+            Sender = sender;
+            InitializeComponent();
+
+            this.DataContext = this;
+
+            ArrayTypeObject = SQLiteBase.GetTypeObjectMap();
+        }
+
         public AddObject(MapObject editObject)
         {
             this.editObject = editObject;
@@ -127,10 +140,11 @@ namespace Users.Message
                         editObject.Name = ObjectName;
                         editObject.Description = ObjectDescription;
                         editObject.TypeObject = SelectedItem;
+                        SQLiteBase.EditObject(editObject);
                     }
                     else
                     {
-                        Sender.AddObject(ObjectName, ObjectDescription, SelectedItem);
+                        Sender.AddObject(ObjectName, ObjectDescription, SelectedItem, addObjectCoordinate);
                         (Application.Current.MainWindow as MainWindow).EnableBlur = false;
                     }
 

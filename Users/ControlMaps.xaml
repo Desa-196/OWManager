@@ -97,7 +97,7 @@
                     </StackPanel>
                     <StackPanel Margin="10,3,10,0">
                         <TextBlock Text="Описание: " Width="80" HorizontalAlignment="Left"/>
-                        <TextBox IsReadOnly="True" Text="{Binding Description}" Height="120" HorizontalScrollBarVisibility="Auto"/>
+                        <TextBox IsReadOnly="True" Text="{Binding Description}" Height="120" VerticalScrollBarVisibility="Auto"/>
                     </StackPanel>
                 </StackPanel>
             </Border>
