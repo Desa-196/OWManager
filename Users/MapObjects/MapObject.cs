@@ -12,7 +12,29 @@ namespace Users
     {
         public TypeObject TypeObject { get; set; }
 
-        public int? _Id = null;
+        private bool isCut = false;
+        public bool IsCut
+        {
+            get { return isCut; }
+            set
+            {
+                isCut = value;
+                OnPropertyChanged("IsCut");
+            }
+        } 
+        
+        private int location;
+        public int Location
+        {
+            get { return location; }
+            set
+            {
+                location = value;
+                OnPropertyChanged("Location");
+            }
+        } 
+        
+        private int? _Id = null;
         public int? Id
         {
             get { return _Id; }
@@ -23,7 +45,7 @@ namespace Users
             }
         }
 
-        public string _Name;
+        private string _Name;
         public string Name {
             get { return _Name; }
             set 
@@ -32,7 +54,7 @@ namespace Users
                 OnPropertyChanged("Name");
             }
         }
-        public double _XCoordinate;
+        private double _XCoordinate;
         public double XCoordinate {
             get { return _XCoordinate; }
             set 
@@ -41,7 +63,7 @@ namespace Users
                 OnPropertyChanged("XCoordinate");
             }
         }
-        public double _YCoordinate;
+        private double _YCoordinate;
         public double YCoordinate
         {
             get { return _YCoordinate; }
@@ -51,7 +73,7 @@ namespace Users
                 OnPropertyChanged("YCoordinate");
             }
         }
-        public string _Description;
+        private string _Description;
         public string Description
         {
             get { return _Description; }

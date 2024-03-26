@@ -48,6 +48,17 @@
                 <ListBox.ContextMenu>
                     <ContextMenu DataContext="MapViewer">
                         <MenuItem Header="Добавить объект" Click="AddContextMenuClick"/>
+                        <MenuItem Header="Вставить" Click="PastObject" Name="PastMenu">
+                            <MenuItem.Style>
+                                <Style TargetType="MenuItem">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CutBufferObject}" Value="{x:Null}">
+                                            <Setter Property="IsEnabled" Value="false"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
+                        </MenuItem>
                     </ContextMenu>
                 </ListBox.ContextMenu>
                 
@@ -64,6 +75,16 @@
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Grid ToolTipService.ShowDuration="1000000">
+                            <Grid.Style>
+                                <Style TargetType="Grid">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsCut}" Value="true">
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                            <Setter Property="Opacity" Value="0.3"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Style>
                             <Grid.ContextMenu>
                                 <ContextMenu>
                                     <MenuItem Header="Показать пользователей" Click="SearchUser">
@@ -78,7 +99,7 @@
                                             </Style>
                                         </MenuItem.Style>
                                     </MenuItem>
-                                    <MenuItem Header="Переместить на другую карту"></MenuItem>
+                                    <MenuItem Header="Вырезать" Click="CutObject"></MenuItem>
                                     <MenuItem Header="Удалить" Click="MenuItem_Delete"></MenuItem>
                                     <MenuItem Header="Изменить" Command="{Binding ChangeObject}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=UserControl}, Path=DataContext}"></MenuItem>
                                 </ContextMenu>

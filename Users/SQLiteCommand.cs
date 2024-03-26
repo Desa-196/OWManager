@@ -6,6 +6,7 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Users
@@ -176,6 +177,13 @@ namespace Users
                     ListTypesObjects[ListTypesObjects.Count - 1].Id = Convert.ToInt32(Result["id_object"]);
                     ListTypesObjects[ListTypesObjects.Count - 1].Name = Result["name"].ToString();
                     ListTypesObjects[ListTypesObjects.Count - 1].Description = Result["descriptions"].ToString();
+                    ListTypesObjects[ListTypesObjects.Count - 1].Location = Convert.ToInt32(Result["locations_id"]);
+                    
+                    if ((Application.Current.MainWindow as MainWindow).CutBufferObject != null && (Application.Current.MainWindow as MainWindow).CutBufferObject.Id == Convert.ToInt32(Result["id_object"]))
+                    {
+                        ListTypesObjects[ListTypesObjects.Count - 1].IsCut = true;
+                        (Application.Current.MainWindow as MainWindow).CutBufferObject = ListTypesObjects[ListTypesObjects.Count - 1];
+                    }
                 }
                 return ListTypesObjects;
             }
@@ -241,6 +249,23 @@ namespace Users
                     SET name = '{editObject.Name}',
 	                    type_object = {editObject.TypeObject.Id},
 	                    descriptions = '{editObject.Description}'
+                    WHERE id = {editObject.Id}
+                    ", Connect);
+                Command_SQL.ExecuteNonQuery();
+            }
+            return true;
+        }        
+        
+        public static bool ChangeLocationObject(MapObject editObject, int location, double coordinateX, double coordinateY)
+        {
+            if (editObject != null)
+            {
+                var Command_SQL = new SQLiteCommand
+                    ($@"
+                    UPDATE ObjectsMap
+                    SET locations_id = '{location}',
+                    x_coordinate = {coordinateX.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US"))},
+                    y_coordinate = {coordinateY.ToString(System.Globalization.CultureInfo.GetCultureInfo("en-US"))}
                     WHERE id = {editObject.Id}
                     ", Connect);
                 Command_SQL.ExecuteNonQuery();

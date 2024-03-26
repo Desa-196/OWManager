@@ -19,9 +19,20 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TextBox;
 
 namespace Users
 {
-    
+
     public partial class MapViewer : UserControl, INotifyPropertyChanged
     {
+
+
+        public MapObject CutBufferObject
+        {
+            get { return (Application.Current.MainWindow as MainWindow).CutBufferObject; }
+            set
+            {
+                (Application.Current.MainWindow as MainWindow).CutBufferObject = value;
+                OnPropertyChanged("CutBufferObject");
+            }
+        }
 
         Point coordinateClickContextMenu;
 
@@ -45,7 +56,7 @@ namespace Users
         public int ItemSelection
         {
             get
-            { 
+            {
                 return (int)GetValue(ItemSelectionProperty);
             }
             set
@@ -71,20 +82,20 @@ namespace Users
         public string MapImageSource
         {
             get
-            { 
-                return (string)GetValue(MapImageSourceProperty); 
+            {
+                return (string)GetValue(MapImageSourceProperty);
             }
             set
-            {   
+            {
                 SetValue(MapImageSourceProperty, value);
             }
         }
-        
+
         public int MapId
         {
             get
-            { 
-                return (int)GetValue(MapIdProperty); 
+            {
+                return (int)GetValue(MapIdProperty);
             }
             set
             {
@@ -99,13 +110,13 @@ namespace Users
 
         public static readonly DependencyProperty SourceElementsProperty = DependencyProperty.Register(
         "SourceElements", typeof(ObservableCollection<MapObject>), typeof(MapViewer));
-        
+
         public static readonly DependencyProperty ItemSelectionProperty = DependencyProperty.Register(
-        "ItemSelection", typeof(int), typeof(MapViewer));  
-        
+        "ItemSelection", typeof(int), typeof(MapViewer));
+
         public static readonly DependencyProperty SelectedObjectProperty = DependencyProperty.Register(
         "SelectedObject", typeof(MapObject), typeof(MapViewer));
-        
+
         public static readonly DependencyProperty MapImageSourceProperty = DependencyProperty.Register(
         "MapImageSource", typeof(string), typeof(MapViewer), new FrameworkPropertyMetadata(null,
         FrameworkPropertyMetadataOptions.AffectsRender,
@@ -146,7 +157,7 @@ namespace Users
         public double WidthMap
         {
             get { return _WidthMap; }
-            set 
+            set
             {
                 _WidthMap = value;
                 OnPropertyChanged("WidthMap");
@@ -156,7 +167,7 @@ namespace Users
         public double HeightMap
         {
             get { return _HeightMap; }
-            set 
+            set
             {
                 _HeightMap = value;
                 OnPropertyChanged("HeightMap");
@@ -178,6 +189,7 @@ namespace Users
             Application.Current.MainWindow.MouseMove += Image_MouseMove;
             Application.Current.MainWindow.MouseUp += Image_MouseLeftButtonUp;
             ItemSelection = -1;
+            PastMenu.DataContext = this;
         }
         public void AddObject(string Name, string description, TypeObject Type, Point addObjectCoordinate)
         {
@@ -213,7 +225,7 @@ namespace Users
 
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e) 
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
             InitialWidth = this.ActualWidth;
             InitialHeight = this.ActualHeight;
@@ -245,15 +257,15 @@ namespace Users
                     CoordinateMap = new Point(0, ((this.ActualHeight - HeightMap) / 2.0));
                 }
             }
-            else 
+            else
             {
-                if (Math.Abs(this.ActualWidth - OldWidth) > 0) 
+                if (Math.Abs(this.ActualWidth - OldWidth) > 0)
                 {
                     if (WidthMap - this.ActualWidth + CoordinateMap.X < 0 && this.ActualWidth < WidthMap)
                     {
                         CoordinateMap = new Point(CoordinateMap.X + Math.Abs(WidthMap - this.ActualWidth + CoordinateMap.X), CoordinateMap.Y);
                     }
-                    else if(WidthMap - this.ActualWidth + CoordinateMap.X < 0 && this.ActualWidth > WidthMap)
+                    else if (WidthMap - this.ActualWidth + CoordinateMap.X < 0 && this.ActualWidth > WidthMap)
                     {
                         double coef = WidthMap / HeightMap;
                         WidthMap += Math.Abs(WidthMap - this.ActualWidth + CoordinateMap.X);
@@ -261,13 +273,13 @@ namespace Users
                     }
 
                 }
-                if (Math.Abs(this.ActualHeight - OldHeight) > 0) 
+                if (Math.Abs(this.ActualHeight - OldHeight) > 0)
                 {
                     if (HeightMap - this.ActualHeight + CoordinateMap.Y < 0 && this.ActualHeight < HeightMap)
                     {
                         CoordinateMap = new Point(CoordinateMap.X, CoordinateMap.Y + Math.Abs(HeightMap - this.ActualHeight + CoordinateMap.Y));
                     }
-                    else if(HeightMap - this.ActualHeight + CoordinateMap.Y < 0 && this.ActualHeight > HeightMap)
+                    else if (HeightMap - this.ActualHeight + CoordinateMap.Y < 0 && this.ActualHeight > HeightMap)
                     {
                         double coef = HeightMap / WidthMap;
                         HeightMap += Math.Abs(HeightMap - this.ActualHeight + CoordinateMap.Y);
@@ -275,7 +287,7 @@ namespace Users
                     }
 
                 }
-          
+
                 OldWidth = this.ActualWidth;
                 OldHeight = this.ActualHeight;
             }
@@ -301,9 +313,9 @@ namespace Users
             {
                 return new MyCommand((obj) =>
                 {
-                    var CursorCoordinateRelativeMap = new Point((this.ActualWidth / 2)-CoordinateMap.X, (this.ActualHeight / 2) - CoordinateMap.Y);
-                    ChangeZoom(CursorCoordinateRelativeMap, new Point(this.ActualWidth/2, this.ActualHeight/2), false);
-                    
+                    var CursorCoordinateRelativeMap = new Point((this.ActualWidth / 2) - CoordinateMap.X, (this.ActualHeight / 2) - CoordinateMap.Y);
+                    ChangeZoom(CursorCoordinateRelativeMap, new Point(this.ActualWidth / 2, this.ActualHeight / 2), false);
+
                 },
                 (obj) =>
                 {
@@ -362,23 +374,6 @@ namespace Users
             }
         }
 
-        public MyCommand AddObjectContextMenu
-        {
-            get
-            {
-                return new MyCommand((obj) =>
-                {
-                    //System.Windows.MessageBox.Show(obj.GetType().ToString());
-                    System.Windows.MessageBox.Show("dfsfsdf");
-
-                },
-                (obj) =>
-                {
-                    return true;
-                });
-            }
-        }
-
         private void Image_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed && sender is ListBox)
@@ -388,7 +383,7 @@ namespace Users
 
                 if (MultiplicityZoom != 1)
                 {
-                    
+
                     CoordinateMousePress.X = e.GetPosition((sender as ListBox).Parent as Canvas).X;
                     CoordinateMousePress.Y = e.GetPosition((sender as ListBox).Parent as Canvas).Y;
                     CoordinateMapsPress = CoordinateMap;
@@ -431,8 +426,8 @@ namespace Users
                 if (CoordinateMapX > 0) CoordinateMapX = 0;
                 if (CoordinateMapY > 0) CoordinateMapY = 0;
 
-                if (CoordinateMapX + WidthMap < this.ActualWidth) CoordinateMapX = (WidthMap - this.ActualWidth)*-1;
-                if (CoordinateMapY + HeightMap < this.ActualHeight) CoordinateMapY = (HeightMap - this.ActualHeight)*-1;
+                if (CoordinateMapX + WidthMap < this.ActualWidth) CoordinateMapX = (WidthMap - this.ActualWidth) * -1;
+                if (CoordinateMapY + HeightMap < this.ActualHeight) CoordinateMapY = (HeightMap - this.ActualHeight) * -1;
 
                 CoordinateMap = new Point(CoordinateMapX, CoordinateMapY);
             }
@@ -443,27 +438,27 @@ namespace Users
                     e.GetPosition(this).X - CoordinateMouseOnMap.X,
                     e.GetPosition(this).Y - CoordinateMouseOnMap.Y
                     );
-                
 
-                double XCoordinate = InitializeCoordinateX*MapsImage.ActualWidth + DisplacementMouse.X;
-                double YCoordinate = InitializeCoordinateY*MapsImage.ActualHeight + DisplacementMouse.Y;
+
+                double XCoordinate = InitializeCoordinateX * MapsImage.ActualWidth + DisplacementMouse.X;
+                double YCoordinate = InitializeCoordinateY * MapsImage.ActualHeight + DisplacementMouse.Y;
 
                 double WidthObject = (IsMoveObject.Parent as Grid).ActualWidth;
                 double HeightObject = (IsMoveObject.Parent as Grid).ActualHeight;
 
-                if (XCoordinate > MapsImage.ActualWidth - WidthObject / 2) XCoordinate = MapsImage.ActualWidth - WidthObject/2;
-                else if (XCoordinate < WidthObject / 2) XCoordinate = WidthObject/2;
+                if (XCoordinate > MapsImage.ActualWidth - WidthObject / 2) XCoordinate = MapsImage.ActualWidth - WidthObject / 2;
+                else if (XCoordinate < WidthObject / 2) XCoordinate = WidthObject / 2;
 
-                if (YCoordinate > MapsImage.ActualHeight - HeightObject/2) YCoordinate = MapsImage.ActualHeight - HeightObject/2;
+                if (YCoordinate > MapsImage.ActualHeight - HeightObject / 2) YCoordinate = MapsImage.ActualHeight - HeightObject / 2;
                 else if (YCoordinate < HeightObject / 2) YCoordinate = HeightObject / 2;
 
                 (IsMoveObject.DataContext as MapObject).XCoordinate = XCoordinate / MapsImage.ActualWidth;
                 (IsMoveObject.DataContext as MapObject).YCoordinate = YCoordinate / MapsImage.ActualHeight;
-                
+
             }
         }
 
-        void  ChangeZoom(Point CursorCoordinateRelativeMap, Point CursorCoordinateRelativeThis, bool Zoom)
+        void ChangeZoom(Point CursorCoordinateRelativeMap, Point CursorCoordinateRelativeThis, bool Zoom)
         {
             if (Zoom && MultiplicityZoom < MaxZoom)
             {
@@ -513,7 +508,7 @@ namespace Users
                 CoordinateMap = new Point(CoordinateMapX, CoordinateMapY);
 
             }
-            else if (!Zoom) 
+            else if (!Zoom)
             {
                 MultiplicityZoom -= 1;
                 CommandManager.InvalidateRequerySuggested();
@@ -547,24 +542,24 @@ namespace Users
 
         private void MapsImage_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-                //Определяем координаты курсора мыши и пересчитываем координаты на увеличенной карте.
-                Point RelativeClickCoordinate = e.GetPosition((ListBox)sender);
+            //Определяем координаты курсора мыши и пересчитываем координаты на увеличенной карте.
+            Point RelativeClickCoordinate = e.GetPosition((ListBox)sender);
 
-                //Определяем координаты курсора мыши на самом контроле
-                Point CanvasCoordinateClick = e.GetPosition(this);
+            //Определяем координаты курсора мыши на самом контроле
+            Point CanvasCoordinateClick = e.GetPosition(this);
 
-                if (e.Delta > 0)
-                {
-                    ChangeZoom(RelativeClickCoordinate, CanvasCoordinateClick, true);
-                }
-                else
-                {
-                    ChangeZoom(RelativeClickCoordinate, CanvasCoordinateClick, false);
-                }
-           
+            if (e.Delta > 0)
+            {
+                ChangeZoom(RelativeClickCoordinate, CanvasCoordinateClick, true);
+            }
+            else
+            {
+                ChangeZoom(RelativeClickCoordinate, CanvasCoordinateClick, false);
+            }
+
         }
 
-       
+
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             IsMoveObject = (sender as Border);
@@ -577,7 +572,7 @@ namespace Users
         private void MenuItem_Delete(object sender, RoutedEventArgs e)
         {
             var MapObject = ((sender as MenuItem).DataContext as MapObject);
-            MessageBoxResult result = System.Windows.MessageBox.Show($"Вы уверены что хотите удалить '{MapObject.Name}'?","Удаление", MessageBoxButton.OKCancel);
+            MessageBoxResult result = System.Windows.MessageBox.Show($"Вы уверены что хотите удалить '{MapObject.Name}'?", "Удаление", MessageBoxButton.OKCancel);
             if (result == MessageBoxResult.OK)
             {
                 SQLiteBase.DeleteElement(MapObject.Id);
@@ -598,6 +593,59 @@ namespace Users
         {
             (Application.Current.MainWindow as MainWindow).EnableBlur = true;
             (Application.Current.MainWindow as MainWindow).TypeMessage = new Message.AddObject(this, coordinateClickContextMenu);
+        }
+
+        private void CutObject(object sender, RoutedEventArgs e)
+        {
+            if (CutBufferObject != null)
+            {
+                CutBufferObject.IsCut = false;
+            }
+            CutBufferObject = (sender as MenuItem).DataContext as MapObject;
+            ((sender as MenuItem).DataContext as MapObject).IsCut = true;
+
+        }
+
+        private void PastObject(object sender, RoutedEventArgs e)
+        {
+            double CreateObjectCoordinateX;
+            double CreateObjectCoordinateY;
+
+            if (coordinateClickContextMenu.X == 0 && coordinateClickContextMenu.Y == 0)
+            {
+                CreateObjectCoordinateX = ((this.ActualWidth / 2) - CoordinateMap.X) / WidthMap;
+                CreateObjectCoordinateY = ((this.ActualHeight / 2) - CoordinateMap.Y) / HeightMap;
+            }
+            else
+            {
+                CreateObjectCoordinateX = coordinateClickContextMenu.X;
+                CreateObjectCoordinateY = coordinateClickContextMenu.Y;
+            }
+
+            //Если объект в буфере в той же локации куда хотим вставить
+            if (CutBufferObject.Location == MapId)
+            {
+                CutBufferObject.XCoordinate = CreateObjectCoordinateX;
+                CutBufferObject.YCoordinate = CreateObjectCoordinateY;
+                SQLiteBase.ChangeLocationObject(CutBufferObject, MapId, CreateObjectCoordinateX, CreateObjectCoordinateY);
+                CutBufferObject.IsCut = false;
+                CutBufferObject = null;
+               
+
+            }
+            //А если вставляем на другую локацию
+            else
+            {
+                CutBufferObject.XCoordinate = CreateObjectCoordinateX;
+                CutBufferObject.YCoordinate = CreateObjectCoordinateY;
+                CutBufferObject.Location = MapId;
+                SourceElements.Add(CutBufferObject);
+                SQLiteBase.ChangeLocationObject(CutBufferObject, MapId, CreateObjectCoordinateX, CreateObjectCoordinateY);
+                ItemSelection = SourceElements.Count - 1;
+                CutBufferObject.IsCut = false;
+                CutBufferObject = null;
+            }
+
         }
     }
 }

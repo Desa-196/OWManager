@@ -26,6 +26,7 @@ namespace Users
     {
         public List<Control> PageList { get; set; } = new List<Control>();
 
+        public MapObject CutBufferObject;
 
         public Control OldFocusElement;
 
