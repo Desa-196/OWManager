@@ -87,6 +87,18 @@
                             </Grid.Style>
                             <Grid.ContextMenu>
                                 <ContextMenu>
+                                    <MenuItem Header="Подключиться" Click="ConnectRadmin">
+                                        <MenuItem.Style>
+                                            <Style TargetType="MenuItem">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Self}, Path=DataContext.TypeObject.Id}" Value="1">
+                                                        <Setter Property="Visibility" Value="Visible"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </MenuItem.Style>
+                                    </MenuItem>
                                     <MenuItem Header="Показать пользователей" Click="SearchUser">
                                         <MenuItem.Style>
                                             <Style TargetType="MenuItem">

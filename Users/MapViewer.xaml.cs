@@ -292,6 +292,8 @@ namespace Users
                 OldHeight = this.ActualHeight;
             }
         }
+
+
         public MyCommand Zoom
         {
             get
@@ -646,6 +648,19 @@ namespace Users
                 CutBufferObject = null;
             }
 
+        }
+
+        private void ConnectRadmin(object sender, RoutedEventArgs e)
+        {
+            if (System.IO.File.Exists(Properties.Settings.Default.RadminPath))
+            {
+                System.Diagnostics.Process.Start(Properties.Settings.Default.RadminPath, "/connect:" + ((sender as MenuItem).DataContext as MapObject).Name);
+            }
+            else
+            {
+                (Application.Current.MainWindow as MainWindow).EnableBlur = true;
+                (Application.Current.MainWindow as MainWindow).TypeMessage = new ControlViewError("RadminViewer не установлен, или установлен по другому пути. \nСтандарный путь: " + Properties.Settings.Default.RadminPath);
+            }
         }
     }
 }
