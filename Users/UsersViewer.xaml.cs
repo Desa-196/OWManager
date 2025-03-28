@@ -341,7 +341,7 @@ namespace Users
                     ListUsers.ItemsSource = SearchList;
                     try
                     {
-                        var ListUserFromOu = await DomainSearch.AsyncSearchUsers(SearchUserName, SearchTelephoneNumber, SearchComputerName) ;
+                        var ListUserFromOu = await DomainSearch.AsyncSearchUsers(SearchUserName.Trim(' ', '\t'), SearchTelephoneNumber, SearchComputerName) ;
 
                         //Если передали параметр NoHistory, значит не пишем запрос в историю.
                         if ((string)obj != "NoHistory")

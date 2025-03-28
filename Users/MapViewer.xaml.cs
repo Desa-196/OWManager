@@ -126,7 +126,6 @@ namespace Users
         private static void OnUriChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             string path = d.GetValue(MapImageSourceProperty).ToString();
-
             //Получаем разрешение исходной картинки карты
             (d as MapViewer).SourceMapSize = new System.Drawing.Bitmap(path).Size;
 
